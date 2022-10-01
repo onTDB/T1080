@@ -1,0 +1,27 @@
+{
+    "name": "T1080",
+    "description": "트위치 SEL(한국) 1080p API 지원",
+    "version": "1.0",
+    "manifest_version": 3,
+    "permissions": [
+        "declarativeNetRequest"
+    ],
+    "icons": {
+        "16": "icon16.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
+    "host_permissions": [
+        "*://usher.ttvnw.net/api/channel/hls/*",
+        "*://*.twitch.tv/*"
+    ],
+    "declarative_net_request": {
+        "rule_resources": [
+            {
+                "id": "m3u8",
+                "enabled": true,
+                "path": "m3u8.json"
+            }
+        ]
+    }
+}

@@ -1,12 +1,12 @@
 from flask import *
-from flask_compress import Compress
+from flask_cors import CORS
 import os
 from streamlink import streams
 import requests
 
-compress = Compress()
 app = Flask(__name__)
 app.secret_key = os.urandom(12)
+CORS(app)
 
 @app.route('/<path:path>')
 def static_file(path):

@@ -1,4 +1,3 @@
-
 from flask import *
 from flask_compress import Compress
 import os
@@ -13,9 +12,9 @@ app.secret_key = os.urandom(12)
 def static_file(path):
     s = streams("https://www.twitch.tv/" + path.replace(".m3u8", ""))
     if s:
-        return requests.get(s["best"].url_master).content
+        return requests.get(s["best"].url_master).content, 200
     else:
-        return "Stream not found"
+        return "Can not find channel", 404
 
 if __name__ == '__main__':
     app.debug = True

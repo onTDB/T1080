@@ -23,6 +23,8 @@ def static_file(path):
         return str(storage.count), 200
     elif path == "count":
         return str(storage.count), 200
+    elif path == "favicon.ico":
+        return "", 404
     storage.count += 1
     s = streams("https://www.twitch.tv/" + path.replace(".m3u8", ""))
     if s:

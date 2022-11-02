@@ -21,6 +21,8 @@ def static_file(path):
     if path == "restart": 
         storage.count = 200
         return str(storage.count), 200
+    elif path == "count":
+        return str(storage.count), 200
     storage.count += 1
     s = streams("https://www.twitch.tv/" + path.replace(".m3u8", ""))
     if s:

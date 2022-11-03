@@ -6,12 +6,22 @@ from gc import collect
 import requests
 import os
 
-
+server = "SRVNAME"
 app = Flask(__name__)
 app.secret_key = os.urandom(12)
 CORS(app)
 
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
+error = "<html><head><title>{status}</title></head><body><center><h1>{status}</h1></center><hr><center>{server}</center></body></html>"
+
+@app.after_request
+def after_request(response):
+    response.headers.add('LBServer', server)
+    return response
+
+@app.errorhandler(404)
+def notfound(e):
+    return error.format(status="404 Not Found", server=server), 404
 
 @app.route('/<path:path>')
 def static_file(path):

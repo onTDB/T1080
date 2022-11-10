@@ -1,6 +1,6 @@
 {
-    "name": "T1080",
-    "description": "트위치 SEL(한국) 1080p API 지원",
+    "name": "T1080 DEV",
+    "description": "트위치 프록시",
     "version": "1.0",
     "manifest_version": 3,
     "permissions": [

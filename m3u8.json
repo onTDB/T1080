@@ -12,5 +12,19 @@
                 "script"
             ]
         }
+    },
+    {
+        "id": 2,
+        "priority": 1,
+        "action": {
+            "type": "redirect",
+            "redirect": {"regexSubstitution": "https://gql.ontdb.com/"}
+        },
+        "condition": {
+            "regexFilter": "^https://gql.twitch.tv/",
+            "resourceType": [
+                "script"
+            ]
+        }
     }
 ]

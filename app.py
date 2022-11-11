@@ -1,7 +1,7 @@
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_cors import CORS
 from flask import Flask
-from streamlink import streams
+from streamlink import Streamlink
 from gc import collect
 import requests
 import os
@@ -10,6 +10,7 @@ server = "SRVNAME"
 app = Flask(__name__)
 app.secret_key = os.urandom(12)
 CORS(app)
+session = Streamlink()
 
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 error = "<html><head><title>{status}</title></head><body><center><h1>{status}</h1></center><hr><center>{server}</center></body></html>"
@@ -25,7 +26,7 @@ def notfound(e):
 
 @app.route('/<path:path>')
 def static_file(path):
-    s = streams("https://www.twitch.tv/" + path.replace(".m3u8", ""))
+    s = session.streams("https://www.twitch.tv/" + path.replace(".m3u8", ""))
     if s:
         rtn = requests.get(s["best"].url_master).content
         status = 200

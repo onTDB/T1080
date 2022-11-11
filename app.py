@@ -26,7 +26,10 @@ def notfound(e):
 
 @app.route('/<path:path>')
 def static_file(path):
-    s = session.streams("https://www.twitch.tv/" + path.replace(".m3u8", ""))
+    if "vod/" in path:
+        s = session.streams("https://www.twitch.tv/videos/" + path.split("/")[-1].replace(".m3u8", ""))
+    else:
+        s = session.streams("https://www.twitch.tv/" + path.replace(".m3u8", ""))
     if s:
         rtn = requests.get(s["best"].url_master).content
         status = 200

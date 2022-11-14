@@ -21,6 +21,11 @@
                 "id": "m3u8",
                 "enabled": true,
                 "path": "m3u8.json"
+            },
+            {
+                "id": "gql",
+                "enabled": false,
+                "path": "gql.json"
             }
         ]
     }

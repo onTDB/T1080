@@ -35,7 +35,6 @@ def static_file(path):
         try:
             s = session.streams("https://www.twitch.tv/videos/" + path.split("/")[-1].replace(".m3u8", ""))
         except:
-            #print("Using API")
             return twitch(path.split("/")[-1].replace(".m3u8", ""))
     else:
         s = session.streams("https://www.twitch.tv/" + path.split("/")[-1].replace(".m3u8", ""))
@@ -56,9 +55,7 @@ def twitch_generate():
 
 def twitch(videoid):
     if not app.token: twitch_generate()
-    print(app.clientid, app.clientsecret, app.token)
     data = requests.get(f"https://api.twitch.tv/helix/videos?id={videoid}", headers={"Client-ID": app.clientid, "Authorization": f"Bearer {app.token}"}).json()
-    print(data)
     s = data["data"][0]["thumbnail_url"].split("/")
     region = s[4]
     videouid = s[5]
@@ -75,7 +72,6 @@ def twitch(videoid):
                 check = False
             if quality == "chunked": check = True
             qual[quality] = url
-    print(qual)
     return m3u8(qual, chunked)
 
 def m3u8(qual, chunked):

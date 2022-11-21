@@ -1,7 +1,7 @@
 from werkzeug.middleware.proxy_fix import ProxyFix
-from flask_cors import CORS
-from flask import Flask
 from streamlink import Streamlink
+from flask import Flask, request
+from flask_cors import CORS
 from gc import collect
 import requests
 import os
@@ -39,6 +39,11 @@ def static_file(path):
     else:
         s = session.streams("https://www.twitch.tv/" + path.split("/")[-1].replace(".m3u8", ""))
     if s:
+        if "quality" in request.args:
+            if request.args["quality"] in s.keys():
+                return s[request.args["quality"]].url
+            else:
+                return "Quality not available."
         rtn = requests.get(s["best"].url_master).content
         status = 200
     else:

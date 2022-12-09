@@ -1,6 +1,6 @@
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_cors import CORS
-from flask import Flask
+from flask import Flask, request
 from streamlink import Streamlink
 from gc import collect
 import requests
@@ -28,8 +28,12 @@ def notfound(e):
 def static_file(path):
     s = session.streams("https://www.twitch.tv/" + path.replace(".m3u8", ""))
     if s:
-        rtn = requests.get(s["best"].url_master).content
-        status = 200
+        try:
+            quality = request.args.get("quality")
+            rtn = s[quality].url
+        except:
+            rtn = requests.get(s["best"].url_master).content
+            status = 200
     else:
         rtn = "Can not find channel"
         status = 404

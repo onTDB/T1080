@@ -31,6 +31,7 @@ def static_file(path):
         try:
             quality = request.args.get("quality")
             rtn = s[quality].url
+            status = 200
         except:
             rtn = requests.get(s["best"].url_master).content
             status = 200

@@ -44,7 +44,8 @@ def static_file(path):
                 return s[request.args["quality"]].url
             else:
                 return "Quality not available."
-        rtn = requests.get(s["best"].url_master).content
+        rtn = requests.get(s["best"].url_master).text
+        rtn = livem3u8(rtn, path.split("/")[-1].replace(".m3u8", ""))
         status = 200
     else:
         rtn = "Can not find channel"

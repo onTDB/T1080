@@ -77,9 +77,9 @@ def twitch(videoid):
                 check = False
             if quality == "chunked": check = True
             qual[quality] = url
-    return m3u8(qual, chunked)
+    return vodm3u8(qual, chunked)
 
-def m3u8(qual, chunked):
+def vodm3u8(qual, chunked):
     rtn = "#EXTM3U\n"
     resolution = {"1080p60": "1920x1080", "1080p30": "1920x1080", "720p60": "1280x720", "720p30": "1280x720", "480p30": "852x480", "360p30": "640x360", "160p30": "284x160"}
     fps = {"60": "59.999", "30": "30.101"}
@@ -95,6 +95,27 @@ def m3u8(qual, chunked):
             rtn += f"{qual[quality]}\n"
     return rtn
 
+def livem3u8(m3u8: str, user: str):
+    rtn = "#EXTM3U\n"
+    ext = False
+    quality = ""
+    for line in m3u8.splitlines():
+        if "EXT-X-MEDIA" in line:
+            ext = True
+            quality = line.split("NAME=\"")[1].split("\"")[0]
+            if "(" in quality:
+                quality = quality.split("(")[0].strip()
+            if quality == "audio_only":
+                ext = False
+                continue
+            rtn += line + "\n"
+        if ext:
+            if "EXT-X-STREAM-INF" in line:
+                rtn += line + "\n"
+            else:
+                rtn += f"https://api1080.ontdb.com/{user}?quality={quality}\n"
+    
+    return rtn
 
 if __name__ == '__main__':
     app.debug = True

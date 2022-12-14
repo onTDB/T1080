@@ -9,7 +9,21 @@
     "condition": {
         "regexFilter": "^https://gql.twitch.tv/",
         "resourceType": [
-            "script"
+          "script"
+        ]
+    }
+  },
+  {
+    "id": 2,
+    "priority": 1,
+    "action": {
+        "type": "redirect",
+        "redirect": {"regexSubstitution": "https://static.twitchcdn.ontdb.com/"}
+    },
+    "condition": {
+        "regexFilter": "^https://static.twitchcdn.net/",
+        "resourceType": [
+          "script"
         ]
     }
   }

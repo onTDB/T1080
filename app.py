@@ -119,13 +119,14 @@ def livem3u8(m3u8: str, user: str):
                 ext = False
                 continue
             rtn += line + "\n"
-        if ext:
+        elif ext:
             if "EXT-X-STREAM-INF" in line:
                 rtn += line + "\n"
             else:
                 server = line.split(".")[1]
                 path = line.split("ttvnw.net/")[1]
                 rtn += f"https://api1080dev.ontdb.com/raw/{path}?server={server}\n"
+                ext = False
                 #rtn += f"https://api1080.ontdb.com/{user}?quality={quality}\n"
     
     return rtn

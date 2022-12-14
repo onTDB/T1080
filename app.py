@@ -41,9 +41,11 @@ def static_file(path):
     if s:
         if "quality" in request.args:
             if request.args["quality"] in s.keys():
+                if "raw" in request.args:
+                    return requests.get(s[request.args["quality"]].url).text
                 return s[request.args["quality"]].url
             else:
-                return "Quality not available."
+                return "Quality not available.", 404
         rtn = requests.get(s["best"].url_master).text
         rtn = livem3u8(rtn, path.split("/")[-1].replace(".m3u8", ""))
         status = 200

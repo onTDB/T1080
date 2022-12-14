@@ -2,19 +2,23 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 from streamlink import Streamlink
 from flask import Flask, request
 from flask_cors import CORS
+from pathlib import Path
+from json import loads
 from gc import collect
 import requests
 import os
 
-server = "SRVNAME"
 app = Flask(__name__)
 app.secret_key = os.urandom(12)
 CORS(app)
 session = Streamlink()
 
+config = loads(Path("config.json").read_text())
+
 app.token = ""
-app.clientid = ""
-app.clientsecret = ""
+server = config["server"]
+app.clientid = config["clientid"]
+app.clientsecret = config["clientsecret"]
 
 
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
@@ -36,6 +40,9 @@ def static_file(path):
             s = session.streams("https://www.twitch.tv/videos/" + path.split("/")[-1].replace(".m3u8", ""))
         except:
             return twitch(path.split("/")[-1].replace(".m3u8", ""))
+    elif "raw/" in path:
+        server = request.args.get("server")
+        return requests.get(f"https://video-weaver.{server}.hls.ttvnw.net/{path.split('raw/')[1]}").text
     else:
         s = session.streams("https://www.twitch.tv/" + path.split("/")[-1].replace(".m3u8", ""))
     if s:
@@ -116,7 +123,10 @@ def livem3u8(m3u8: str, user: str):
             if "EXT-X-STREAM-INF" in line:
                 rtn += line + "\n"
             else:
-                rtn += f"https://api1080.ontdb.com/{user}?quality={quality}\n"
+                server = line.split(".")[1]
+                path = line.split("ttvnw.net/")[1]
+                rtn += f"https://api1080dev.ontdb.com/raw/{path}?server={server}\n"
+                #rtn += f"https://api1080.ontdb.com/{user}?quality={quality}\n"
     
     return rtn
 

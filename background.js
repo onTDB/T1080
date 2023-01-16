@@ -8,6 +8,8 @@ var proxyconf = {
               "        return 'PROXY proxy2.ontdb.com:5000';\n" +
               "    else if (host.includes('usher.ttvnw.net')) \n" +
               "        return 'PROXY proxy2.ontdb.com:5000';\n" +
+              "    else if (host.includes('abs.hls.ttvnw.net')) \n" +
+              "        return 'PROXY proxy2.ontdb.com:5000';\n" +
               //"    }\n" +
               "}\n"
     }

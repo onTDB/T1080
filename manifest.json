@@ -1,11 +1,15 @@
 {
     "name": "T1080 DEV",
     "description": "트위치 프록시",
-    "version": "1.0",
+    "version": "1.2",
     "manifest_version": 3,
     "permissions": [
-        "declarativeNetRequest"
+        "declarativeNetRequest",
+        "proxy"
     ],
+    "background": {
+        "service_worker": "background.js"
+    },
     "icons": {
         "16": "icon16.png",
         "48": "icon48.png",
@@ -13,8 +17,7 @@
     },
     "host_permissions": [
         "*://usher.ttvnw.net/api/channel/hls/*",
-        "*://*.twitch.tv/*",
-        "*://twitch.ontdb.com/*"
+        "*://*.twitch.tv/*"
     ],
     "declarative_net_request": {
         "rule_resources": [
@@ -25,7 +28,7 @@
             },
             {
                 "id": "gql",
-                "enabled": true,
+                "enabled": false,
                 "path": "gql.json"
             }
         ]

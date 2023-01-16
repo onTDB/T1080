@@ -33,32 +33,25 @@ def after_request(response):
 def notfound(e):
     return error.format(status="404 Not Found", server=server), 404
 
-@app.route('/<path:path>')
+@app.route('/vod/<path:path>')
+def vod(path):
+    try:
+        s = session.streams("https://www.twitch.tv/videos/" + path.split("/")[-1].replace(".m3u8", ""))
+    except:
+        return twitch(path.split("/")[-1].replace(".m3u8", ""))
+
+@app.route('/api/channels/hls/<path:path>')
 def static_file(path):
-    if "vod/" in path:
-        try:
-            s = session.streams("https://www.twitch.tv/videos/" + path.split("/")[-1].replace(".m3u8", ""))
-        except:
-            return twitch(path.split("/")[-1].replace(".m3u8", ""))
-    elif "raw/" in path:
-        server = request.args.get("server")
-        return requests.get(f"https://video-weaver.{server}.hls.ttvnw.net/{path.split('raw/')[1]}").text
-    else:
+    try:
         s = session.streams("https://www.twitch.tv/" + path.split("/")[-1].replace(".m3u8", ""))
-    if s:
         if "quality" in request.args:
-            if request.args["quality"] in s.keys():
-                if "raw" in request.args:
-                    return requests.get(s[request.args["quality"]].url).text
-                return s[request.args["quality"]].url
-            else:
-                return "Quality not available.", 404
-        rtn = requests.get(s["best"].url_master).text
-        rtn = livem3u8(rtn, path.split("/")[-1].replace(".m3u8", ""))
-        status = 200
-    else:
-        rtn = "Can not find channel"
-        status = 404
+            rtn = s[request.args["quality"]].url
+            status = 200
+        else:
+            rtn = requests.get(s["best"].url_master).text
+            status = 200
+    except:
+        return "Can not find channel", 404
     
     del(s)
     collect()

@@ -1,10 +1,9 @@
 {
     "name": "T1080 DEV",
     "description": "트위치 프록시",
-    "version": "1.2",
+    "version": "1.3",
     "manifest_version": 3,
     "permissions": [
-        "declarativeNetRequest",
         "proxy"
     ],
     "background": {
@@ -14,23 +13,5 @@
         "16": "icon16.png",
         "48": "icon48.png",
         "128": "icon128.png"
-    },
-    "host_permissions": [
-        "*://usher.ttvnw.net/api/channel/hls/*",
-        "*://*.twitch.tv/*"
-    ],
-    "declarative_net_request": {
-        "rule_resources": [
-            {
-                "id": "m3u8",
-                "enabled": true,
-                "path": "m3u8.json"
-            },
-            {
-                "id": "gql",
-                "enabled": false,
-                "path": "gql.json"
-            }
-        ]
     }
 }

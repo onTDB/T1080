@@ -3,13 +3,13 @@ var proxyconf = {
     pacScript: {
         data: "function FindProxyForURL(url, host) {\n" +
               "    if (host == 'twitch.tv') \n" +
-              "        return 'PROXY proxy2.ontdb.com:5000';\n" +
+              "        return 'HTTPS proxy2.ontdb.com:5000';\n" +
               "    else if (host.includes('cloudfront.net')) \n" +
-              "        return 'PROXY proxy2.ontdb.com:5000';\n" +
+              "        return 'HTTPS proxy2.ontdb.com:5000';\n" +
               "    else if (host.includes('usher.ttvnw.net')) \n" +
-              "        return 'PROXY proxy2.ontdb.com:5000';\n" +
+              "        return 'HTTPS proxy2.ontdb.com:5000';\n" +
               "    else if (host.includes('abs.hls.ttvnw.net')) \n" +
-              "        return 'PROXY proxy2.ontdb.com:5000';\n" +
+              "        return 'HTTPS proxy2.ontdb.com:5000';\n" +
               //"    }\n" +
               "}\n"
     }
